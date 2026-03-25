@@ -1,29 +1,13 @@
 'use client'
 
-import { useState } from 'react'
 import Link from 'next/link'
 import { signup } from '../actions'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
-import { AlertCircle } from 'lucide-react'
 
 export default function SignUpPage() {
-  const [error, setError] = useState<string | null>(null)
-  const [isLoading, setIsLoading] = useState(false)
-
-  async function handleSubmit(formData: FormData) {
-    setIsLoading(true)
-    setError(null)
-
-    const result = await signup(formData)
-    if (result?.error) {
-      setError(result.error)
-      setIsLoading(false)
-    }
-  }
-
   return (
     <div className="min-h-screen flex items-center justify-center bg-background px-4">
       <Card className="w-full max-w-md">
@@ -36,14 +20,8 @@ export default function SignUpPage() {
             Registrera dig för att börja buda på auktioner.
           </CardDescription>
         </CardHeader>
-        <form action={handleSubmit}>
+        <form action={signup}>
           <CardContent className="space-y-4">
-            {error && (
-              <div className="flex items-center gap-2 p-3 text-sm text-destructive bg-destructive/10 rounded-md">
-                <AlertCircle className="h-4 w-4" />
-                {error}
-              </div>
-            )}
             <div className="space-y-2">
               <Label htmlFor="fullName">Namn</Label>
               <Input
@@ -77,8 +55,8 @@ export default function SignUpPage() {
             </div>
           </CardContent>
           <CardFooter className="flex flex-col gap-4">
-            <Button type="submit" className="w-full" disabled={isLoading}>
-              {isLoading ? 'Skapar konto...' : 'Skapa konto'}
+            <Button type="submit" className="w-full">
+              Skapa konto
             </Button>
             <p className="text-sm text-muted-foreground text-center">
               Har du redan ett konto?{' '}
