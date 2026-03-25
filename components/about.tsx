@@ -1,4 +1,24 @@
 import { Shield, Award, Users, History } from "lucide-react"
+import { createClient } from "@/lib/supabase/server"
+
+type SiteContent = {
+  key: string
+  value: string
+}
+
+async function getContent() {
+  const supabase = await createClient()
+  const { data } = await supabase
+    .from('site_content')
+    .select('key, value')
+    .in('key', ['about_title', 'about_text1', 'about_text2'])
+  
+  const contentMap: Record<string, string> = {}
+  data?.forEach((item: SiteContent) => {
+    contentMap[item.key] = item.value
+  })
+  return contentMap
+}
 
 const features = [
   {
@@ -23,7 +43,9 @@ const features = [
   },
 ]
 
-export function About() {
+export async function About() {
+  const content = await getContent()
+
   return (
     <section id="om-oss" className="py-24 bg-primary text-primary-foreground">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
@@ -33,17 +55,13 @@ export function About() {
               Om Fornbro Auktioner
             </p>
             <h2 className="font-serif text-4xl md:text-5xl font-bold leading-tight">
-              Tradition möter<br />modern expertis
+              {content.about_title || 'Tradition möter modern expertis'}
             </h2>
             <p className="mt-6 text-lg leading-relaxed text-primary-foreground/80">
-              Fornbro Auktioner grundades 1987 med visionen att göra antikviteter och 
-              konstskatter tillgängliga för en bredare publik. Idag är vi ett av 
-              Sveriges mest respekterade auktionshus med kunder från hela världen.
+              {content.about_text1 || 'Fornbro Auktioner grundades 1987 med visionen att göra antikviteter och konstskatter tillgängliga för en bredare publik. Idag är vi ett av Sveriges mest respekterade auktionshus med kunder från hela världen.'}
             </p>
             <p className="mt-4 text-lg leading-relaxed text-primary-foreground/80">
-              Vårt team av experter har decenniers erfarenhet inom sina respektive 
-              områden och garanterar att varje objekt vi förmedlar uppfyller högsta 
-              kvalitetskrav.
+              {content.about_text2 || 'Vårt team av experter har decenniers erfarenhet inom sina respektive områden och garanterar att varje objekt vi förmedlar uppfyller högsta kvalitetskrav.'}
             </p>
             
             <div className="mt-10 flex items-center gap-6">

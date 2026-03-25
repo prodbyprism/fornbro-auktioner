@@ -10,6 +10,7 @@ import {
   Users,
   Settings,
   BarChart3,
+  FileText,
 } from 'lucide-react'
 
 interface Profile {
@@ -20,6 +21,7 @@ const navigation = [
   { name: 'Dashboard', href: '/admin', icon: LayoutDashboard },
   { name: 'Auktioner', href: '/admin/auctions', icon: Gavel },
   { name: 'Kategorier', href: '/admin/categories', icon: FolderOpen },
+  { name: 'Innehåll', href: '/admin/content', icon: FileText, roles: ['superadmin', 'admin'] },
   { name: 'Användare', href: '/admin/users', icon: Users, roles: ['superadmin', 'admin'] },
   { name: 'Statistik', href: '/admin/stats', icon: BarChart3 },
   { name: 'Inställningar', href: '/admin/settings', icon: Settings, roles: ['superadmin'] },
